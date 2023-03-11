@@ -6,8 +6,10 @@ import {
   Paper,
   styled,
   Divider,
+  Button,
 } from "@mui/material";
-import { green } from "@mui/material/colors";
+import { green, red } from "@mui/material/colors";
+import TextField from "@mui/material/TextField";
 
 import React from "react";
 import useGlobalContext from "../hooks/useGlobalContext";
@@ -31,19 +33,14 @@ const Home = () => {
 
   return (
     <Box component="div">
-      <Box
-        component="div"
-        sx={{ maxWidth: "30rem", margin: "2rem auto", backgroundColor: dark }}
-      >
+      <Box component="div" sx={{ maxWidth: "30rem", margin: "2rem auto" }}>
         <Typography variant="h6" sx={{ textAlign: "center" }}>
           CONTROLE DE DESPESAS
         </Typography>
-        <Typography variant="caption" sx={{ textAlign: "center" }}>
-          SALDO ATUAL
-        </Typography>
-        <Box component="div" sx={{ padding: ".5rem" }}>
+        <Typography variant="caption">SALDO ATUAL</Typography>
+        <Typography variant="h4" sx={{ padding: ".8rem", color: dark }}>
           AKZ 2000
-        </Box>
+        </Typography>
 
         <Box sx={{ width: "100%" }}>
           <Stack spacing={2}>
@@ -51,12 +48,12 @@ const Home = () => {
             <CompanyBalance>
               <Box component="div" sx={{ textAlign: "center" }}>
                 <Typography>RECEITAS</Typography>
-                <Typography>2000</Typography>
+                <Typography sx={{ color: green[500] }}>2000</Typography>
               </Box>
               <Divider orientation="vertical" flexItem />
               <Box component="div" sx={{ textAlign: "center" }}>
                 <Typography>DESPESAS</Typography>
-                <Typography>2000</Typography>
+                <Typography sx={{ color: red[500] }}>2000</Typography>
               </Box>{" "}
             </CompanyBalance>
           </Stack>
@@ -74,12 +71,32 @@ const Home = () => {
             component="div"
             sx={{ fontWeight: "bold" }}
           />
-          <Stack spacing={2} sx={{ marginTop: "1rem" }}>
+          <Stack spacing={1} sx={{ marginTop: "1rem" }}>
             <Operations sx={{ borderRight: `.5rem solid ${green[500]}` }}>
-              <Typography>DESPESAS</Typography>
+              <Typography>KAHAMBA</Typography>
               <Typography>2000</Typography>
             </Operations>
           </Stack>
+          <Box component="form" sx={{ marginTop: "2rem" }}>
+            <Typography sx={{ marginBottom: ".8rem" }}>
+              Adicionar transação
+            </Typography>
+            <Divider
+              orientation="horizontal"
+              component="div"
+              sx={{ fontWeight: "bold", marginBottom: "1rem" }}
+            />
+            <Box
+              component="div"
+              sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+            >
+              <TextField id="outlined-basic" label="Nome" variant="outlined" />
+              <TextField id="filled-basic" label="Valor" variant="outlined" />
+              <Button variant="contained" type="submit">
+                Adicionar
+              </Button>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </Box>
