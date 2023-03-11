@@ -1,0 +1,62 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --twitter-blue: #1da1f2;
+}
+body {
+  color: #0f1419;
+  -webkit-font-smoothing: antialased;
+}
+
+body,
+input,
+textarea,
+button {
+  font: 400 1rem Roboto, sans-serif;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+/* Page: Timeline */
+
+.layout {
+  margin: 0 auto;
+  max-width: 1000px;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.5rem 1.25rem;
+}
+
+.sidebar .logo {
+  width: 2rem;
+  height: 2rem;
+}
+
+.sidebar .new-twitee {
+  background: var(--twitter-blue);
+  padding: 1rem;
+}
+
+.sidebar .new-twitee:hover {
+  filter: brightness(0.95);
+}
+
+.content {
+  border-left: 1px solid #edeef0;
+  border-right: 1px solid #edeef0;
+}
