@@ -1,4 +1,3 @@
-import "./App.css";
 import { GlobalStorage } from "./components/GlobalStorage";
 import Home from "./components/Home";
 
