@@ -7,13 +7,16 @@ import {
   styled,
   Divider,
 } from "@mui/material";
+import { green } from "@mui/material/colors";
+
 import React from "react";
 import useGlobalContext from "../hooks/useGlobalContext";
+import { Operations } from "./MyStyles";
 
 const Home = () => {
   const {
     palette: {
-      primary: { light },
+      primary: { dark },
     },
   } = useTheme();
 
@@ -22,14 +25,16 @@ const Home = () => {
     ...theme.typography.body2,
     padding: theme.spacing(3),
     display: "flex",
-    marginBottom: ".5rem",
     justifyContent: "space-around",
     color: theme.palette.text.secondary,
   }));
 
   return (
     <Box component="div">
-      <Box component="div" sx={{ maxWidth: "30rem", margin: "2rem auto" }}>
+      <Box
+        component="div"
+        sx={{ maxWidth: "30rem", margin: "2rem auto", backgroundColor: dark }}
+      >
         <Typography variant="h6" sx={{ textAlign: "center" }}>
           CONTROLE DE DESPESAS
         </Typography>
@@ -41,10 +46,7 @@ const Home = () => {
         </Box>
 
         <Box sx={{ width: "100%" }}>
-          <Stack
-            spacing={2}
-            divider={<Divider orientation="vertical" flexItem />}
-          >
+          <Stack spacing={2}>
             {" "}
             <CompanyBalance>
               <Box component="div" sx={{ textAlign: "center" }}>
@@ -57,6 +59,26 @@ const Home = () => {
                 <Typography>2000</Typography>
               </Box>{" "}
             </CompanyBalance>
+          </Stack>
+        </Box>
+        <Box
+          component="div"
+          sx={{
+            marginTop: "2rem",
+            width: "100%",
+          }}
+        >
+          <Typography sx={{ marginBottom: ".8rem" }}>Transações</Typography>
+          <Divider
+            orientation="horizontal"
+            component="div"
+            sx={{ fontWeight: "bold" }}
+          />
+          <Stack spacing={2} sx={{ marginTop: "1rem" }}>
+            <Operations sx={{ borderRight: `.5rem solid ${green[500]}` }}>
+              <Typography>DESPESAS</Typography>
+              <Typography>2000</Typography>
+            </Operations>
           </Stack>
         </Box>
       </Box>
