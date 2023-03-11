@@ -1,7 +1,11 @@
 import React from "react";
+import useGlobalContext from "../hooks/useGlobalContext";
 
 const Home = () => {
-  return <div>Home</div>;
+  const {
+    global: { name },
+  } = useGlobalContext();
+  return <div>{name}</div>;
 };
 
 export default Home;
