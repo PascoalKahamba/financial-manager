@@ -9,6 +9,7 @@ import {
   Button,
 } from "@mui/material";
 import { green, red } from "@mui/material/colors";
+import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 
 import React from "react";
@@ -33,7 +34,7 @@ const Home = () => {
 
   return (
     <Box component="div">
-      <Box component="div" sx={{ maxWidth: "30rem", margin: "2rem auto" }}>
+      <Box component="div" sx={{ maxWidth: "25rem", margin: "2rem auto" }}>
         <Typography variant="h6" sx={{ textAlign: "center" }}>
           CONTROLE DE DESPESAS
         </Typography>
@@ -91,13 +92,39 @@ const Home = () => {
               sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}
             >
               <TextField id="outlined-basic" label="Nome" variant="outlined" />
-              <TextField id="filled-basic" label="Valor" variant="outlined" />
+              <Box
+                component="div"
+                sx={{ display: "flex", flexDirection: "column", gap: ".5rem" }}
+              >
+                <TextField id="filled-basic" label="Valor" variant="outlined" />
+                <Box
+                  component="div"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography variant="caption" sx={{ color: red[500] }}>
+                    Negativo - Despesas
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: green[500] }}>
+                    Positivo - Receitas
+                  </Typography>
+                </Box>
+              </Box>
               <Button variant="contained" type="submit">
                 Adicionar
               </Button>
             </Box>
           </Box>
         </Box>
+        <Typography sx={{ textAlign: "center", marginTop: "2rem" }}>
+          &copy; Copyrights -{""}
+          <Link href="#" underline="none">
+            {""} Pascoal Kahamba
+          </Link>
+        </Typography>
       </Box>
     </Box>
   );
