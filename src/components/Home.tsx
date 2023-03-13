@@ -9,18 +9,28 @@ import {
   Button,
 } from "@mui/material";
 import { green, red } from "@mui/material/colors";
+import { useState } from "react";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
+import CustomizedSnackbars from "./CustomizedSnackbars";
 import { Operations } from "./MyStyles";
 import SpeedDialTooltipOpen from "./SpeedDialTooltipOpen";
 
+type handleChangeProps =
+  | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+  | undefined;
+
 const Home = () => {
+  const [form, setForm] = useState({ product: "", price: 0 });
   const {
     palette: {
       primary: { dark },
     },
   } = useTheme();
 
+  const handleChange: handleChangeProps = ({ target }) => {
+    setForm({ ...form, [target.id]: target.value });
+  };
   const CompanyBalance = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
@@ -89,13 +99,21 @@ const Home = () => {
               component="div"
               sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}
             >
-              <TextField id="outlined-basic" label="Nome" variant="outlined" />
+              <TextField
+                value={form.product}
+                onChange={handleChange}
+                id="product"
+                label="Nome"
+                variant="outlined"
+              />
               <Box
                 component="div"
                 sx={{ display: "flex", flexDirection: "column", gap: ".5rem" }}
               >
                 <TextField
-                  id="filled-basic"
+                  value={form.price}
+                  onChange={handleChange}
+                  id="price"
                   type="number"
                   label="Valor"
                   variant="outlined"
@@ -130,6 +148,7 @@ const Home = () => {
         </Typography>
       </Box>
       <SpeedDialTooltipOpen />
+      <CustomizedSnackbars />
     </Box>
   );
 };
