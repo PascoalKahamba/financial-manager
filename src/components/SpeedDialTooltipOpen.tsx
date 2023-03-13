@@ -10,19 +10,47 @@ import {
   MdDelete,
   MdLightMode,
 } from "react-icons/md";
-
-const actions = [
-  { icon: <MdLightMode />, name: "Alterar_tema" },
-  { icon: <MdDeleteForever />, name: "Apagar_tudo" },
-  { icon: <MdDeleteOutline />, name: "Apagar_receitas" },
-  { icon: <MdDelete />, name: "Apagar_despesas" },
-];
+import useGlobalContext from "../hooks/useGlobalContext";
 
 export default function SpeedDialTooltipOpen() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
+  const {
+    global: { setThemeName },
+  } = useGlobalContext();
+
+  const actions = [
+    {
+      icon: (
+        <MdLightMode
+          style={{ fontSize: "1.3rem" }}
+          onClick={() =>
+            setThemeName((beforeTheme) =>
+              beforeTheme === "dark" ? "light" : "dark"
+            )
+          }
+        />
+      ),
+      name: "Alterar_tema",
+    },
+    {
+      icon: <MdDeleteForever style={{ fontSize: "1.3rem" }} />,
+      name: "Apagar_tudo",
+    },
+    {
+      icon: <MdDeleteOutline style={{ fontSize: "1.3rem" }} />,
+      name: "Apagar_receitas",
+    },
+    {
+      icon: <MdDelete style={{ fontSize: "1.3rem" }} />,
+      name: "Apagar_despesas",
+    },
+  ];
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <Box
       sx={{
@@ -45,13 +73,13 @@ export default function SpeedDialTooltipOpen() {
         onOpen={handleOpen}
         open={open}
       >
-        {actions.map((action) => (
+        {actions.map(({ name, icon }) => (
           <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
+            key={name}
+            icon={icon}
+            id={name}
+            tooltipTitle={name}
             tooltipOpen
-            sx={{ width: "100%" }}
             onClick={handleClose}
           />
         ))}
