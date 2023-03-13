@@ -2,7 +2,7 @@ import * as React from "react";
 import Stack from "@mui/material/Stack";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import useGlobalStarage from "../hooks/useGlobalStarage";
+import useGlobalContext from "../hooks/useGlobalContext";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -14,7 +14,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 export default function CustomizedSnackbars() {
   const {
     global: { open, setOpen, feedBack },
-  } = useGlobalStarage();
+  } = useGlobalContext();
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,

@@ -4,9 +4,11 @@ import { createContext, useState } from "react";
 import usePersistedStorage from "../hooks/usePersistedStorage";
 
 interface ContextProps {
-  name: string;
-  age: number;
+  feedBack: FeedBackProps;
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setThemeName: React.Dispatch<React.SetStateAction<ThemeNameProps>>;
+  setFeedBack: React.Dispatch<React.SetStateAction<FeedBackProps>>;
 }
 
 type ThemeNameProps = "light" | "dark";
@@ -20,6 +22,7 @@ interface GlobalStorageProps {
 export const GlobalContext = createContext<ContextProps | null>(null);
 
 export const GlobalStorage = ({ children }: GlobalStorageProps) => {
+  const [open, setOpen] = useState(false);
   const [feedBack, setFeedBack] = useState<FeedBackProps>({
     kind: "error",
     message: "",
@@ -35,7 +38,9 @@ export const GlobalStorage = ({ children }: GlobalStorageProps) => {
     },
   });
   return (
-    <GlobalContext.Provider value={{ name: "Pascoal", age: 20, setThemeName }}>
+    <GlobalContext.Provider
+      value={{ setThemeName, feedBack, open, setFeedBack, setOpen }}
+    >
       <ThemeProvider theme={theme}>
         <CssBaseline />
         {children}
