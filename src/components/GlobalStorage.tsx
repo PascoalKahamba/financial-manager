@@ -1,4 +1,4 @@
-import { createTheme, ThemeProvider } from "@mui/material";
+import { AlertColor, createTheme, ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createContext, useState } from "react";
 import usePersistedStorage from "../hooks/usePersistedStorage";
@@ -10,13 +10,20 @@ interface ContextProps {
 }
 
 type ThemeNameProps = "light" | "dark";
-
+interface FeedBackProps {
+  kind: AlertColor;
+  message: string;
+}
 interface GlobalStorageProps {
   children: React.ReactNode;
 }
 export const GlobalContext = createContext<ContextProps | null>(null);
 
 export const GlobalStorage = ({ children }: GlobalStorageProps) => {
+  const [feedBack, setFeedBack] = useState<FeedBackProps>({
+    kind: "error",
+    message: "",
+  });
   const [themeName, setThemeName] = usePersistedStorage<ThemeNameProps>(
     "theme",
     "light"
