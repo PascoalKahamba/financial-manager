@@ -11,10 +11,8 @@ import {
 import { green, red } from "@mui/material/colors";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
-
-import React from "react";
-import useGlobalContext from "../hooks/useGlobalContext";
 import { Operations } from "./MyStyles";
+import SpeedDialTooltipOpen from "./SpeedDialTooltipOpen";
 
 const Home = () => {
   const {
@@ -34,7 +32,7 @@ const Home = () => {
 
   return (
     <Box component="div">
-      <Box component="div" sx={{ maxWidth: "25rem", margin: "2rem auto" }}>
+      <Box component="div" sx={{ maxWidth: "22rem", margin: "2rem auto" }}>
         <Typography variant="h6" sx={{ textAlign: "center" }}>
           CONTROLE DE DESPESAS
         </Typography>
@@ -96,7 +94,12 @@ const Home = () => {
                 component="div"
                 sx={{ display: "flex", flexDirection: "column", gap: ".5rem" }}
               >
-                <TextField id="filled-basic" label="Valor" variant="outlined" />
+                <TextField
+                  id="filled-basic"
+                  type="number"
+                  label="Valor"
+                  variant="outlined"
+                />
                 <Box
                   component="div"
                   sx={{
@@ -126,6 +129,7 @@ const Home = () => {
           </Link>
         </Typography>
       </Box>
+      <SpeedDialTooltipOpen />
     </Box>
   );
 };
