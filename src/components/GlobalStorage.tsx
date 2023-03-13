@@ -1,6 +1,7 @@
 import { createTheme, ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createContext, useState } from "react";
+import usePersistedStorage from "../hooks/usePersistedStorage";
 
 interface ContextProps {
   name: string;
@@ -16,7 +17,10 @@ interface GlobalStorageProps {
 export const GlobalContext = createContext<ContextProps | null>(null);
 
 export const GlobalStorage = ({ children }: GlobalStorageProps) => {
-  const [themeName, setThemeName] = useState<ThemeNameProps>("light");
+  const [themeName, setThemeName] = usePersistedStorage<ThemeNameProps>(
+    "theme",
+    "light"
+  );
 
   const theme = createTheme({
     palette: {
