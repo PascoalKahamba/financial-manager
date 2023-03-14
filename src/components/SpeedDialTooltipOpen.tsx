@@ -56,7 +56,8 @@ export default function SpeedDialTooltipOpen() {
   return (
     <Box
       sx={{
-        height: "auto",
+        width: "100%",
+        height: "100%",
         transform: "translateZ(0px)",
         flexGrow: 1,
       }}
@@ -66,7 +67,8 @@ export default function SpeedDialTooltipOpen() {
         ariaLabel="SpeedDial tooltip example"
         sx={{
           position: "fixed",
-          bottom: 40,
+
+          bottom: 70,
           right: 16,
           zIndex: 1000,
         }}

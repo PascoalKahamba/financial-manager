@@ -20,6 +20,20 @@ type handleChangeProps =
   | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
   | undefined;
 
+type addTransitionProps = React.FormEventHandler<HTMLFormElement> | undefined;
+
+function validateFieldNameProduct(nameProduct: string) {
+  return (
+    (nameProduct === "" && "O campo nome não pode estar vazio.") ||
+    (!Number.isNaN(+nameProduct) &&
+      "O valor do campo nome não pode ser um numero.")
+  );
+}
+
+function validateFieldPriceProduct(priceProduct: string | number) {
+  return priceProduct === "" && "Digite o valor do produto.";
+}
+
 const Home = () => {
   const [form, setForm] = useState({ product: "", price: 0 });
   const {
@@ -31,6 +45,13 @@ const Home = () => {
   const handleChange: handleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
   };
+
+  const nameProduct = validateFieldNameProduct(form.product);
+  const priceProduct = validateFieldPriceProduct(form.price);
+
+  const addTransition: addTransitionProps = (event) => {
+    event.preventDefault();
+  };
   const CompanyBalance = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
@@ -41,8 +62,8 @@ const Home = () => {
   }));
 
   return (
-    <Box component="div">
-      <Box component="div" sx={{ maxWidth: "22rem", margin: "2rem auto" }}>
+    <Box component="section">
+      <Box component="div" sx={{ maxWidth: "23rem", margin: "2rem auto" }}>
         <Typography variant="h6" sx={{ textAlign: "center" }}>
           CONTROLE DE DESPESAS
         </Typography>
@@ -86,7 +107,11 @@ const Home = () => {
               <Typography>2000</Typography>
             </Operations>
           </Stack>
-          <Box component="form" sx={{ marginTop: "2rem" }}>
+          <Box
+            component="form"
+            sx={{ marginTop: "2rem" }}
+            onSubmit={addTransition}
+          >
             <Typography sx={{ marginBottom: ".8rem" }}>
               Adicionar transação
             </Typography>
