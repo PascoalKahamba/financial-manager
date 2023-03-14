@@ -13,8 +13,9 @@ import { useState } from "react";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import CustomizedSnackbars from "./CustomizedSnackbars";
-import { Operations } from "./MyStyles";
+import { Transition } from "./MyStyles";
 import SpeedDialTooltipOpen from "./SpeedDialTooltipOpen";
+import useGlobalContext from "../hooks/useGlobalContext";
 
 type handleChangeProps =
   | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
@@ -22,6 +23,10 @@ type handleChangeProps =
 
 type addTransitionProps = React.FormEventHandler<HTMLFormElement> | undefined;
 
+interface TransitionCompanyProps {
+  product: string;
+  price: number;
+}
 function validateFieldNameProduct(nameProduct: string) {
   return (
     (nameProduct === "" && "O campo nome não pode estar vazio.") ||
@@ -36,11 +41,18 @@ function validateFieldPriceProduct(priceProduct: string | number) {
 
 const Home = () => {
   const [form, setForm] = useState({ product: "", price: 0 });
+  const [transitionCompany, setTransitionCompany] = useState<
+    TransitionCompanyProps[]
+  >([]);
   const {
     palette: {
       primary: { dark },
     },
   } = useTheme();
+
+  const {
+    global: { setOpen, setFeedBack, open },
+  } = useGlobalContext();
 
   const handleChange: handleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
@@ -51,6 +63,20 @@ const Home = () => {
 
   const addTransition: addTransitionProps = (event) => {
     event.preventDefault();
+    if (nameProduct) {
+      setOpen(true);
+      setFeedBack({ kind: "error", message: nameProduct });
+    } else if (priceProduct) {
+      setOpen(true);
+      setFeedBack({ kind: "error", message: priceProduct });
+    } else {
+      setTransitionCompany([
+        { product: form.product, price: +form.price },
+        ...transitionCompany,
+      ]);
+
+      setForm({ product: "", price: 0 });
+    }
   };
   const CompanyBalance = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -102,10 +128,21 @@ const Home = () => {
             sx={{ fontWeight: "bold" }}
           />
           <Stack spacing={1} sx={{ marginTop: "1rem" }}>
-            <Operations sx={{ borderRight: `.5rem solid ${green[500]}` }}>
-              <Typography>KAHAMBA</Typography>
-              <Typography>2000</Typography>
-            </Operations>
+            {transitionCompany.length === 0 ? (
+              <Typography variant="body2" sx={{ textAlign: "center" }}>
+                Nenhuma transição adicionada
+              </Typography>
+            ) : (
+              transitionCompany.map(({ product, price }, index) => (
+                <Transition
+                  key={index}
+                  sx={{ borderRight: `.5rem solid ${green[500]}` }}
+                >
+                  <Typography> {product}</Typography>
+                  <Typography>{price}</Typography>
+                </Transition>
+              ))
+            )}
           </Stack>
           <Box
             component="form"
@@ -126,6 +163,7 @@ const Home = () => {
             >
               <TextField
                 value={form.product}
+                error={open && nameProduct}
                 onChange={handleChange}
                 id="product"
                 label="Nome"
@@ -137,6 +175,7 @@ const Home = () => {
               >
                 <TextField
                   value={form.price}
+                  error={open && priceProduct}
                   onChange={handleChange}
                   id="price"
                   type="number"
