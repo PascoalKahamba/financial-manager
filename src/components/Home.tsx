@@ -16,6 +16,7 @@ import CustomizedSnackbars from "./CustomizedSnackbars";
 import { Transition } from "./MyStyles";
 import SpeedDialTooltipOpen from "./SpeedDialTooltipOpen";
 import useGlobalContext from "../hooks/useGlobalContext";
+import { MdHighlightOff, MdClear } from "react-icons/md";
 
 type handleChangeProps =
   | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
@@ -160,7 +161,22 @@ const Home = () => {
                     }`,
                   }}
                 >
-                  <Typography>{product} </Typography>
+                  <Typography
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      gap: 1,
+                    }}
+                  >
+                    <MdClear
+                      style={{
+                        color: red[500],
+                        cursor: "pointer",
+                      }}
+                    />
+                    {product}{" "}
+                  </Typography>
                   <Typography>{price},00</Typography>
                 </Transition>
               ))

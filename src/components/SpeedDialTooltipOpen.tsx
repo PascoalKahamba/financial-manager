@@ -9,8 +9,6 @@ import {
   MdDeleteOutline,
   MdDelete,
   MdLightMode,
-  MdHighlightOff,
-  MdClear,
 } from "react-icons/md";
 import useGlobalContext from "../hooks/useGlobalContext";
 
