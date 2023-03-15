@@ -9,7 +9,7 @@ import {
   Button,
 } from "@mui/material";
 import { green, red } from "@mui/material/colors";
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import CustomizedSnackbars from "./CustomizedSnackbars";
@@ -23,7 +23,7 @@ type handleChangeProps =
 
 type addTransitionProps = React.FormEventHandler<HTMLFormElement> | undefined;
 
-interface TransitionCompanyProps {
+interface companyTransitionProps {
   product: string;
   price: number;
 }
@@ -36,13 +36,19 @@ function validateFieldNameProduct(nameProduct: string) {
 }
 
 function validateFieldPriceProduct(priceProduct: string | number) {
-  return priceProduct === "" && "Digite o valor do produto.";
+  return (
+    (priceProduct === "" && "Digite o valor do produto.") ||
+    (priceProduct === 0 && "O valor do produto deve ser diferente de 0.")
+  );
 }
 
 const Home = () => {
   const [form, setForm] = useState({ product: "", price: 0 });
-  const [transitionCompany, setTransitionCompany] = useState<
-    TransitionCompanyProps[]
+  const [companyRevenues, setCompanyRevenues] = useState(0);
+  const [companyExpenses, setCompanyExpenses] = useState(0);
+  const focusOnTheInput = useRef<HTMLInputElement>(null);
+  const [companyTransition, setcompanyTransition] = useState<
+    companyTransitionProps[]
   >([]);
   const {
     palette: {
@@ -61,6 +67,8 @@ const Home = () => {
   const nameProduct = validateFieldNameProduct(form.product);
   const priceProduct = validateFieldPriceProduct(form.price);
 
+  const totalBalance = companyRevenues - companyExpenses;
+
   const addTransition: addTransitionProps = (event) => {
     event.preventDefault();
     if (nameProduct) {
@@ -70,14 +78,20 @@ const Home = () => {
       setOpen(true);
       setFeedBack({ kind: "error", message: priceProduct });
     } else {
-      setTransitionCompany([
+      setcompanyTransition([
+        ...companyTransition,
         { product: form.product, price: +form.price },
-        ...transitionCompany,
       ]);
 
+      if (form.price > 0)
+        setCompanyRevenues(companyRevenues + Number(form.price));
+      else setCompanyExpenses(companyExpenses + Number(-form.price));
+
       setForm({ product: "", price: 0 });
+      focusOnTheInput.current?.focus();
     }
   };
+
   const CompanyBalance = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
@@ -95,7 +109,7 @@ const Home = () => {
         </Typography>
         <Typography variant="caption">SALDO ATUAL</Typography>
         <Typography variant="h4" sx={{ padding: ".8rem", color: dark }}>
-          AKZ 2000
+          AKZ {totalBalance < 0 ? -totalBalance : totalBalance},00
         </Typography>
 
         <Box sx={{ width: "100%" }}>
@@ -104,12 +118,16 @@ const Home = () => {
             <CompanyBalance>
               <Box component="div" sx={{ textAlign: "center" }}>
                 <Typography>RECEITAS</Typography>
-                <Typography sx={{ color: green[500] }}>2000</Typography>
+                <Typography sx={{ color: green[500] }}>
+                  AKZ {companyRevenues},00
+                </Typography>
               </Box>
               <Divider orientation="vertical" flexItem />
               <Box component="div" sx={{ textAlign: "center" }}>
                 <Typography>DESPESAS</Typography>
-                <Typography sx={{ color: red[500] }}>2000</Typography>
+                <Typography sx={{ color: red[500] }}>
+                  AKZ {companyExpenses},00
+                </Typography>
               </Box>{" "}
             </CompanyBalance>
           </Stack>
@@ -128,18 +146,22 @@ const Home = () => {
             sx={{ fontWeight: "bold" }}
           />
           <Stack spacing={1} sx={{ marginTop: "1rem" }}>
-            {transitionCompany.length === 0 ? (
+            {companyTransition.length === 0 ? (
               <Typography variant="body2" sx={{ textAlign: "center" }}>
                 Nenhuma transição adicionada
               </Typography>
             ) : (
-              transitionCompany.map(({ product, price }, index) => (
+              companyTransition.map(({ product, price }, index) => (
                 <Transition
                   key={index}
-                  sx={{ borderRight: `.5rem solid ${green[500]}` }}
+                  sx={{
+                    borderRight: `.5rem solid ${
+                      price >= 0 ? green[500] : red[500]
+                    }`,
+                  }}
                 >
-                  <Typography> {product}</Typography>
-                  <Typography>{price}</Typography>
+                  <Typography>{product} </Typography>
+                  <Typography>{price},00</Typography>
                 </Transition>
               ))
             )}
@@ -163,7 +185,8 @@ const Home = () => {
             >
               <TextField
                 value={form.product}
-                error={open && nameProduct}
+                inputRef={focusOnTheInput}
+                error={nameProduct && open}
                 onChange={handleChange}
                 id="product"
                 label="Nome"
@@ -175,7 +198,7 @@ const Home = () => {
               >
                 <TextField
                   value={form.price}
-                  error={open && priceProduct}
+                  error={priceProduct && open}
                   onChange={handleChange}
                   id="price"
                   type="number"
