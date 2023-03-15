@@ -24,6 +24,8 @@ type handleChangeProps =
 
 type addTransitionProps = React.FormEventHandler<HTMLFormElement> | undefined;
 
+type cleanEachTransitionProps = React.MouseEventHandler<SVGElement> | undefined;
+
 interface companyTransitionProps {
   product: string;
   price: number;
@@ -47,8 +49,9 @@ const Home = () => {
   const [form, setForm] = useState({ product: "", price: 0 });
   const [companyRevenues, setCompanyRevenues] = useState(0);
   const [companyExpenses, setCompanyExpenses] = useState(0);
+  const [id, setId] = useState(0);
   const focusOnTheInput = useRef<HTMLInputElement>(null);
-  const [companyTransition, setcompanyTransition] = useState<
+  const [companyTransition, setCompanyTransition] = useState<
     companyTransitionProps[]
   >([]);
   const {
@@ -65,6 +68,14 @@ const Home = () => {
     setForm({ ...form, [target.id]: target.value });
   };
 
+  const cleanEachTransition: cleanEachTransitionProps = () => {
+    const newCompanyTransition = companyTransition.filter(
+      (transition, pos) => pos !== pos
+    );
+    setCompanyTransition(newCompanyTransition);
+    console.log(newCompanyTransition);
+  };
+
   const nameProduct = validateFieldNameProduct(form.product);
   const priceProduct = validateFieldPriceProduct(form.price);
 
@@ -79,7 +90,7 @@ const Home = () => {
       setOpen(true);
       setFeedBack({ kind: "error", message: priceProduct });
     } else {
-      setcompanyTransition([
+      setCompanyTransition([
         ...companyTransition,
         { product: form.product, price: +form.price },
       ]);
@@ -174,6 +185,7 @@ const Home = () => {
                         color: red[500],
                         cursor: "pointer",
                       }}
+                      onClick={cleanEachTransition}
                     />
                     {product}{" "}
                   </Typography>
