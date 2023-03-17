@@ -16,7 +16,7 @@ import CustomizedSnackbars from "./CustomizedSnackbars";
 import { Transition } from "./MyStyles";
 import SpeedDialTooltipOpen from "./SpeedDialTooltipOpen";
 import useGlobalContext from "../hooks/useGlobalContext";
-import { MdHighlightOff, MdClear } from "react-icons/md";
+import { MdClear } from "react-icons/md";
 
 type handleChangeProps =
   | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
@@ -29,6 +29,7 @@ type cleanEachTransitionProps = React.MouseEventHandler<SVGElement> | undefined;
 interface companyTransitionProps {
   product: string;
   price: number;
+  id: number;
 }
 function validateFieldNameProduct(nameProduct: string) {
   return (
@@ -69,11 +70,20 @@ const Home = () => {
   };
 
   const cleanEachTransition: cleanEachTransitionProps = () => {
-    const newCompanyTransition = companyTransition.filter(
-      (transition, pos) => pos !== pos
+    const newCompanyTransition = [...companyTransition];
+    newCompanyTransition.forEach((_, index, array) => array.splice(index, 1));
+    newCompanyTransition.forEach((transition) =>
+      setCompanyTransition((before) =>
+        before.filter(({ id }) => id !== transition.id)
+      )
     );
-    setCompanyTransition(newCompanyTransition);
-    console.log(newCompanyTransition);
+
+    // setCompanyTransition((before) =>
+    //   before.filter((transition) => transition.id === id)
+    // );
+    console.log(companyTransition);
+    console.log(id);
+    // console.log(newCompanyTransition);
   };
 
   const nameProduct = validateFieldNameProduct(form.product);
@@ -92,8 +102,9 @@ const Home = () => {
     } else {
       setCompanyTransition([
         ...companyTransition,
-        { product: form.product, price: +form.price },
+        { product: form.product, price: +form.price, id: id },
       ]);
+      setId((id) => id + 1);
 
       if (form.price > 0)
         setCompanyRevenues(companyRevenues + Number(form.price));
