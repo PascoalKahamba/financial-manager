@@ -50,7 +50,6 @@ const Home = () => {
   const [form, setForm] = useState({ product: "", price: 0 });
   const [companyRevenues, setCompanyRevenues] = useState(0);
   const [companyExpenses, setCompanyExpenses] = useState(0);
-  const [id, setId] = useState(0);
   const focusOnTheInput = useRef<HTMLInputElement>(null);
   const [companyTransition, setCompanyTransition] = useState<
     companyTransitionProps[]
@@ -69,24 +68,23 @@ const Home = () => {
     setForm({ ...form, [target.id]: target.value });
   };
 
-  const cleanEachTransition: cleanEachTransitionProps = () => {
-    const newCompanyTransition = [...companyTransition];
-    newCompanyTransition.forEach((_, index, array) => array.splice(index, 1));
+  const cleanEachTransition = (num: number) => {
+    setCompanyTransition((before) => before.filter(({ id }) => id !== num));
+  };
 
-    newCompanyTransition.forEach((transition) =>
-      setCompanyTransition((before) =>
-        before.filter(({ id }) => id !== transition.id)
-      )
+  useEffect(() => {
+    setCompanyRevenues(
+      companyTransition
+        .filter(({ price }) => price > 0)
+        .reduce((acc, tran) => acc + tran.price, 0)
     );
 
-    // setCompanyTransition((before) =>
-    //   before.filter((transition) => transition.id === id)
-    // );
-    console.log(companyTransition);
-    console.log(newCompanyTransition);
-    console.log(id);
-    // console.log(newCompanyTransition);
-  };
+    setCompanyExpenses(
+      companyTransition
+        .filter(({ price }) => price < 0)
+        .reduce((acc, tran) => acc + tran.price, 0)
+    );
+  }, [companyTransition]);
 
   const nameProduct = validateFieldNameProduct(form.product);
   const priceProduct = validateFieldPriceProduct(form.price);
@@ -104,13 +102,12 @@ const Home = () => {
     } else {
       setCompanyTransition([
         ...companyTransition,
-        { product: form.product, price: +form.price, id: id },
+        {
+          product: form.product,
+          price: +form.price,
+          id: Number(Math.round(Math.random() * 1000)),
+        },
       ]);
-      setId((id) => id + 1);
-
-      if (form.price > 0)
-        setCompanyRevenues(companyRevenues + Number(form.price));
-      else setCompanyExpenses(companyExpenses + Number(form.price));
 
       setForm({ product: "", price: 0 });
       focusOnTheInput.current?.focus();
@@ -176,7 +173,7 @@ const Home = () => {
                 Nenhuma transição adicionada
               </Typography>
             ) : (
-              companyTransition.map(({ product, price }, index) => (
+              companyTransition.map(({ product, price, id }, index) => (
                 <Transition
                   key={index}
                   sx={{
@@ -199,7 +196,7 @@ const Home = () => {
                         color: red[500],
                         cursor: "pointer",
                       }}
-                      onClick={cleanEachTransition}
+                      onClick={() => cleanEachTransition(id)}
                     />
                     {product}{" "}
                   </Typography>
