@@ -72,6 +72,7 @@ const Home = () => {
   const cleanEachTransition: cleanEachTransitionProps = () => {
     const newCompanyTransition = [...companyTransition];
     newCompanyTransition.forEach((_, index, array) => array.splice(index, 1));
+
     newCompanyTransition.forEach((transition) =>
       setCompanyTransition((before) =>
         before.filter(({ id }) => id !== transition.id)
@@ -82,6 +83,7 @@ const Home = () => {
     //   before.filter((transition) => transition.id === id)
     // );
     console.log(companyTransition);
+    console.log(newCompanyTransition);
     console.log(id);
     // console.log(newCompanyTransition);
   };
@@ -108,7 +110,7 @@ const Home = () => {
 
       if (form.price > 0)
         setCompanyRevenues(companyRevenues + Number(form.price));
-      else setCompanyExpenses(companyExpenses + Number(-form.price));
+      else setCompanyExpenses(companyExpenses + Number(form.price));
 
       setForm({ product: "", price: 0 });
       focusOnTheInput.current?.focus();
@@ -132,7 +134,7 @@ const Home = () => {
         </Typography>
         <Typography variant="caption">SALDO ATUAL</Typography>
         <Typography variant="h4" sx={{ padding: ".8rem", color: dark }}>
-          AKZ {totalBalance < 0 ? -totalBalance : totalBalance},00
+          AKZ {Math.abs(totalBalance).toFixed(2).replace(".", ",")}
         </Typography>
 
         <Box sx={{ width: "100%" }}>
@@ -142,14 +144,14 @@ const Home = () => {
               <Box component="div" sx={{ textAlign: "center" }}>
                 <Typography>RECEITAS</Typography>
                 <Typography sx={{ color: green[500] }}>
-                  AKZ {companyRevenues},00
+                  AKZ {companyRevenues.toFixed(2).replace(".", ",")}
                 </Typography>
               </Box>
               <Divider orientation="vertical" flexItem />
               <Box component="div" sx={{ textAlign: "center" }}>
                 <Typography>DESPESAS</Typography>
                 <Typography sx={{ color: red[500] }}>
-                  AKZ {companyExpenses},00
+                  AKZ {Math.abs(companyExpenses).toFixed(2).replace(".", ",")}
                 </Typography>
               </Box>{" "}
             </CompanyBalance>
@@ -178,6 +180,7 @@ const Home = () => {
                 <Transition
                   key={index}
                   sx={{
+                    fontWeight: "bold",
                     borderRight: `.5rem solid ${
                       price >= 0 ? green[500] : red[500]
                     }`,
@@ -200,7 +203,11 @@ const Home = () => {
                     />
                     {product}{" "}
                   </Typography>
-                  <Typography>{price},00</Typography>
+                  <Typography>
+                    {price > 0 ? "+" : "-"}
+                    {""} {""}AKZ{""}
+                    {""} {Math.abs(price).toFixed(2).replace(".", ",")}
+                  </Typography>
                 </Transition>
               ))
             )}
