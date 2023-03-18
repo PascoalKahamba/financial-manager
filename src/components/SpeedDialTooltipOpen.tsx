@@ -14,6 +14,8 @@ import useGlobalContext from "../hooks/useGlobalContext";
 import { companyTransitionProps } from "./Home";
 
 interface SpeedDialTooltipOpenProps {
+  companyTransition: companyTransitionProps[];
+
   setCompanyTransition: React.Dispatch<
     React.SetStateAction<companyTransitionProps[]>
   >;
@@ -21,6 +23,7 @@ interface SpeedDialTooltipOpenProps {
 
 export default function SpeedDialTooltipOpen({
   setCompanyTransition,
+  companyTransition,
 }: SpeedDialTooltipOpenProps) {
   const [open, setOpenHere] = React.useState(false);
   const handleOpen = () => setOpenHere(true);
@@ -29,6 +32,9 @@ export default function SpeedDialTooltipOpen({
     global: { setThemeName, setFeedBack, setOpen },
   } = useGlobalContext();
 
+  const revenues = companyTransition.filter(({ price }) => price > 0);
+  const expenses = companyTransition.filter(({ price }) => price < 0);
+
   const cleanAllTransition = () => {
     setCompanyTransition([]);
     setOpen(true);
@@ -36,6 +42,24 @@ export default function SpeedDialTooltipOpen({
       kind: "success",
       message: "Todas as transições foram eliminadas.",
     });
+  };
+
+  const cleanTheRevenues = () => {
+    setCompanyTransition((beforeTransition) =>
+      beforeTransition.filter(({ price }) => price < 0)
+    );
+
+    setOpen(true);
+    setFeedBack({ kind: "success", message: "Receitas eliminadas." });
+  };
+
+  const cleanTheExpenses = () => {
+    setCompanyTransition((beforeTransition) =>
+      beforeTransition.filter(({ price }) => price > 0)
+    );
+
+    setOpen(true);
+    setFeedBack({ kind: "success", message: "Despesas eliminadas." });
   };
 
   const actions = [
@@ -62,11 +86,18 @@ export default function SpeedDialTooltipOpen({
       name: "Apagar_tudo",
     },
     {
-      icon: <MdDeleteOutline style={{ fontSize: "1.3rem" }} />,
+      icon: (
+        <MdDeleteOutline
+          style={{ fontSize: "1.3rem" }}
+          onClick={cleanTheRevenues}
+        />
+      ),
       name: "Apagar_receitas",
     },
     {
-      icon: <MdDelete style={{ fontSize: "1.3rem" }} />,
+      icon: (
+        <MdDelete style={{ fontSize: "1.3rem" }} onClick={cleanTheExpenses} />
+      ),
       name: "Apagar_despesas",
     },
   ];
