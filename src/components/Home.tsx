@@ -26,7 +26,7 @@ type addTransitionProps = React.FormEventHandler<HTMLFormElement> | undefined;
 
 type cleanEachTransitionProps = React.MouseEventHandler<SVGElement> | undefined;
 
-interface companyTransitionProps {
+export interface companyTransitionProps {
   product: string;
   price: number;
   id: number;
@@ -68,8 +68,10 @@ const Home = () => {
     setForm({ ...form, [target.id]: target.value });
   };
 
-  const cleanEachTransition = (num: number) => {
-    setCompanyTransition((before) => before.filter(({ id }) => id !== num));
+  const cleanEachTransition = (idTrans: number) => {
+    setCompanyTransition((beforeTransition) =>
+      beforeTransition.filter(({ id }) => id !== idTrans)
+    );
   };
 
   useEffect(() => {
@@ -173,9 +175,9 @@ const Home = () => {
                 Nenhuma transição adicionada
               </Typography>
             ) : (
-              companyTransition.map(({ product, price, id }, index) => (
+              companyTransition.map(({ product, price, id }) => (
                 <Transition
-                  key={index}
+                  key={id}
                   sx={{
                     fontWeight: "bold",
                     borderRight: `.5rem solid ${
@@ -229,7 +231,6 @@ const Home = () => {
               <TextField
                 value={form.product}
                 inputRef={focusOnTheInput}
-                error={nameProduct && open}
                 onChange={handleChange}
                 id="product"
                 label="Nome"
@@ -241,7 +242,6 @@ const Home = () => {
               >
                 <TextField
                   value={form.price}
-                  error={priceProduct && open}
                   onChange={handleChange}
                   id="price"
                   type="number"
@@ -277,7 +277,7 @@ const Home = () => {
           </Link>
         </Typography>
       </Box>
-      <SpeedDialTooltipOpen />
+      <SpeedDialTooltipOpen setCompanyTransition={setCompanyTransition} />
       <CustomizedSnackbars />
     </Box>
   );

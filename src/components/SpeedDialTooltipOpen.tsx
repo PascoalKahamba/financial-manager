@@ -11,14 +11,32 @@ import {
   MdLightMode,
 } from "react-icons/md";
 import useGlobalContext from "../hooks/useGlobalContext";
+import { companyTransitionProps } from "./Home";
 
-export default function SpeedDialTooltipOpen() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+interface SpeedDialTooltipOpenProps {
+  setCompanyTransition: React.Dispatch<
+    React.SetStateAction<companyTransitionProps[]>
+  >;
+}
+
+export default function SpeedDialTooltipOpen({
+  setCompanyTransition,
+}: SpeedDialTooltipOpenProps) {
+  const [open, setOpenHere] = React.useState(false);
+  const handleOpen = () => setOpenHere(true);
 
   const {
-    global: { setThemeName },
+    global: { setThemeName, setFeedBack, setOpen },
   } = useGlobalContext();
+
+  const cleanAllTransition = () => {
+    setCompanyTransition([]);
+    setOpen(true);
+    setFeedBack({
+      kind: "success",
+      message: "Todas as transições foram eliminadas.",
+    });
+  };
 
   const actions = [
     {
@@ -35,7 +53,12 @@ export default function SpeedDialTooltipOpen() {
       name: "Alterar_tema",
     },
     {
-      icon: <MdDeleteForever style={{ fontSize: "1.3rem" }} />,
+      icon: (
+        <MdDeleteForever
+          style={{ fontSize: "1.3rem" }}
+          onClick={cleanAllTransition}
+        />
+      ),
       name: "Apagar_tudo",
     },
     {
@@ -49,7 +72,7 @@ export default function SpeedDialTooltipOpen() {
   ];
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenHere(false);
   };
   return (
     <Box
