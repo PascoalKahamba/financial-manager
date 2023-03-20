@@ -273,7 +273,11 @@ const Home = () => {
         </Box>
         <Typography sx={{ textAlign: "center", marginTop: "2rem" }}>
           &copy; Copyrights -{""}
-          <Link href="https://github.com/PascoalKahamba" underline="none">
+          <Link
+            href="https://github.com/PascoalKahamba"
+            underline="none"
+            target="_blank"
+          >
             {""} Pascoal Kahamba
           </Link>
         </Typography>
