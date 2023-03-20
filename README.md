@@ -1,20 +1,20 @@
 # Gestor Financeiro
 
-Este `projeto` foi desenvolvido com `TypeScript` e `React` com o objetivo de melhorar ainda mas as minhas habilidades em `TypeScript` e `React`. É basicamente uma `aplicação` web para ajudar as empresas para terem acesso ao controlo as suas `receitas` e `despesas` de uma forma simples.
+Este `projeto` foi desenvolvido com `TypeScript` e `React` com o objetivo de melhorar ainda mas as minhas habilidades em `TypeScript` e `React`. É basicamente uma `aplicação` web para ajudar as `empresas` para terem acesso ao controlo das suas `receitas` e `despesas` de uma forma simples.
 
 A aplicação têm três partes principais o `Saldo atual` que é a soma das receitas e despesas, as `Receitas` que é o `saldo positivo` e as `Despesas` que é o `saldo negativo` todos estes `valores`
 dependem das `Transicões` que são adicionadas e excluidas pelo `usuário`.
 
-![foto do projeto](src/pictures/student.PNG)
+![foto do projeto](pictures/financial.PNG)
 
-![foto do projeto](src/pictures/student1.PNG)
+![foto do projeto](pictures/financial1.PNG)
 
 ## Tecnologias
 
 As seguintes ferramentas foram usadas na constuição deste projeto:
 
 - HTML
-- MATERIAL-UI
+- MUI
 - TYPESCRIPT
 - REACT
 
