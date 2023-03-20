@@ -3,7 +3,7 @@
 Este `projeto` foi desenvolvido com `TypeScript` e `React` com o objetivo de melhorar ainda mas as minhas habilidades em `TypeScript` e `React`. É basicamente uma `aplicação` web para ajudar as `empresas` para terem acesso ao controlo das suas `receitas` e `despesas` de uma forma simples.
 
 A aplicação têm três partes principais o `Saldo atual` que é a diferença entre as receitas e despesas, as `Receitas` que é o `saldo positivo` e as `Despesas` que é o `saldo negativo` todos estes `valores`
-dependem das `Transicões` que são adicionadas e excluidas pelo `usuário`.
+dependem das `Transações` que são adicionadas e excluidas pelo `usuário`.
 
 ![foto do projeto](pictures/financial.PNG)
 
