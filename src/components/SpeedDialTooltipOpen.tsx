@@ -15,7 +15,6 @@ import { companyTransitionProps } from "./Home";
 
 interface SpeedDialTooltipOpenProps {
   companyTransition: companyTransitionProps[];
-
   setCompanyTransition: React.Dispatch<
     React.SetStateAction<companyTransitionProps[]>
   >;
@@ -35,31 +34,55 @@ export default function SpeedDialTooltipOpen({
   const revenues = companyTransition.filter(({ price }) => price > 0);
   const expenses = companyTransition.filter(({ price }) => price < 0);
 
-  const cleanAllTransition = () => {
-    setCompanyTransition([]);
-    setOpen(true);
-    setFeedBack({
-      kind: "success",
-      message: "Todas as transições foram eliminadas.",
-    });
-  };
-
   const cleanTheRevenues = () => {
-    setCompanyTransition((beforeTransition) =>
-      beforeTransition.filter(({ price }) => price < 0)
-    );
+    if (revenues.length > 0) {
+      setCompanyTransition((beforeTransition) =>
+        beforeTransition.filter(({ price }) => price < 0)
+      );
 
-    setOpen(true);
-    setFeedBack({ kind: "success", message: "Receitas eliminadas." });
+      setOpen(true);
+      setFeedBack({ kind: "success", message: "Receitas eliminadas." });
+    } else {
+      setOpen(true);
+      setFeedBack({
+        kind: "warning",
+        message: "Nenhuma  receita foi adicionada.",
+      });
+    }
   };
 
   const cleanTheExpenses = () => {
-    setCompanyTransition((beforeTransition) =>
-      beforeTransition.filter(({ price }) => price > 0)
-    );
+    if (expenses.length > 0) {
+      setCompanyTransition((beforeTransition) =>
+        beforeTransition.filter(({ price }) => price > 0)
+      );
 
-    setOpen(true);
-    setFeedBack({ kind: "success", message: "Despesas eliminadas." });
+      setOpen(true);
+      setFeedBack({ kind: "success", message: "Despesas eliminadas." });
+    } else {
+      setOpen(true);
+      setFeedBack({
+        kind: "warning",
+        message: "Nenhuma despesa foi adicionada.",
+      });
+    }
+  };
+
+  const cleanAllTransition = () => {
+    if (companyTransition.length > 0) {
+      setCompanyTransition([]);
+      setOpen(true);
+      setFeedBack({
+        kind: "success",
+        message: "Todas as transições foram eliminadas.",
+      });
+    } else {
+      setOpen(true);
+      setFeedBack({
+        kind: "warning",
+        message: "Nenhuma transição foi adicionada.",
+      });
+    }
   };
 
   const actions = [
@@ -76,10 +99,13 @@ export default function SpeedDialTooltipOpen({
       ),
       name: "Alterar_tema",
     },
+
     {
       icon: (
         <MdDeleteForever
-          style={{ fontSize: "1.3rem" }}
+          style={{
+            fontSize: "1.3rem",
+          }}
           onClick={cleanAllTransition}
         />
       ),
@@ -88,7 +114,9 @@ export default function SpeedDialTooltipOpen({
     {
       icon: (
         <MdDeleteOutline
-          style={{ fontSize: "1.3rem" }}
+          style={{
+            fontSize: "1.3rem",
+          }}
           onClick={cleanTheRevenues}
         />
       ),
@@ -96,7 +124,12 @@ export default function SpeedDialTooltipOpen({
     },
     {
       icon: (
-        <MdDelete style={{ fontSize: "1.3rem" }} onClick={cleanTheExpenses} />
+        <MdDelete
+          style={{
+            fontSize: "1.3rem",
+          }}
+          onClick={cleanTheExpenses}
+        />
       ),
       name: "Apagar_despesas",
     },

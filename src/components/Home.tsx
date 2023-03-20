@@ -277,7 +277,10 @@ const Home = () => {
           </Link>
         </Typography>
       </Box>
-      <SpeedDialTooltipOpen setCompanyTransition={setCompanyTransition} />
+      <SpeedDialTooltipOpen
+        setCompanyTransition={setCompanyTransition}
+        companyTransition={companyTransition}
+      />
       <CustomizedSnackbars />
     </Box>
   );
