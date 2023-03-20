@@ -17,6 +17,7 @@ import { Transition } from "./MyStyles";
 import SpeedDialTooltipOpen from "./SpeedDialTooltipOpen";
 import useGlobalContext from "../hooks/useGlobalContext";
 import { MdClear } from "react-icons/md";
+import useTransitionStorage from "../hooks/useTransitionStorage";
 
 type handleChangeProps =
   | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
@@ -49,9 +50,9 @@ const Home = () => {
   const [companyRevenues, setCompanyRevenues] = useState(0);
   const [companyExpenses, setCompanyExpenses] = useState(0);
   const focusOnTheInput = useRef<HTMLInputElement>(null);
-  const [companyTransition, setCompanyTransition] = useState<
+  const [companyTransition, setCompanyTransition] = useTransitionStorage<
     companyTransitionProps[]
-  >([]);
+  >("transition", []);
   const {
     palette: {
       primary: { dark },
@@ -65,11 +66,6 @@ const Home = () => {
   const handleChange: handleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
   };
-
-  window.addEventListener("load", () => {
-    const transition = localStorage.getItem("transition");
-    if (transition) setCompanyTransition(JSON.parse(transition));
-  });
 
   const cleanEachTransition = (idTrans: number) => {
     setCompanyTransition((beforeTransition) =>
@@ -89,11 +85,7 @@ const Home = () => {
         .filter(({ price }) => price < 0)
         .reduce((acc, tran) => acc + tran.price, 0)
     );
-    if (companyTransition.length > 0)
-      localStorage.setItem(
-        "transition",
-        JSON.stringify([...companyTransition])
-      );
+    localStorage.setItem("transition", JSON.stringify(companyTransition));
   }, [companyTransition]);
 
   const nameProduct = validateFieldNameProduct(form.product);
