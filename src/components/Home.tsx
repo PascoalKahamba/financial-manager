@@ -24,8 +24,6 @@ type handleChangeProps =
 
 type addTransitionProps = React.FormEventHandler<HTMLFormElement> | undefined;
 
-type cleanEachTransitionProps = React.MouseEventHandler<SVGElement> | undefined;
-
 export interface companyTransitionProps {
   product: string;
   price: number;
@@ -61,12 +59,17 @@ const Home = () => {
   } = useTheme();
 
   const {
-    global: { setOpen, setFeedBack, open },
+    global: { setOpen, setFeedBack },
   } = useGlobalContext();
 
   const handleChange: handleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
   };
+
+  window.addEventListener("load", () => {
+    const transition = localStorage.getItem("transition");
+    if (transition) setCompanyTransition(JSON.parse(transition));
+  });
 
   const cleanEachTransition = (idTrans: number) => {
     setCompanyTransition((beforeTransition) =>
@@ -86,6 +89,11 @@ const Home = () => {
         .filter(({ price }) => price < 0)
         .reduce((acc, tran) => acc + tran.price, 0)
     );
+    if (companyTransition.length > 0)
+      localStorage.setItem(
+        "transition",
+        JSON.stringify([...companyTransition])
+      );
   }, [companyTransition]);
 
   const nameProduct = validateFieldNameProduct(form.product);
