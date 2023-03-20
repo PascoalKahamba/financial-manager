@@ -83,7 +83,7 @@ const Home = () => {
     setCompanyExpenses(
       companyTransition
         .filter(({ price }) => price < 0)
-        .reduce((acc, tran) => acc + tran.price, 0)
+        .reduce((acc, tran) => acc + -tran.price, 0)
     );
 
     localStorage.setItem("transition", JSON.stringify(companyTransition));
