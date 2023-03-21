@@ -74,13 +74,13 @@ export default function SpeedDialTooltipOpen({
       setOpen(true);
       setFeedBack({
         kind: "success",
-        message: "Todas as transições foram eliminadas.",
+        message: "Todas as transações foram eliminadas.",
       });
     } else {
       setOpen(true);
       setFeedBack({
         kind: "warning",
-        message: "Nenhuma transição foi adicionada.",
+        message: "Nenhuma transação foi adicionada.",
       });
     }
   };
